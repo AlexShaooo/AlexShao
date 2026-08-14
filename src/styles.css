@@ -1,0 +1,1264 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --- Theme variables --- */
+:root {
+  --bg: #ffffff;
+  --nav-bg: rgba(255, 255, 255, 0.45);
+  --nav-border: rgba(160, 155, 140, 0.25);
+  --text-primary: rgba(60, 55, 45, 0.9);
+  --text-secondary: rgba(80, 75, 65, 0.65);
+  --text-strong: rgba(40, 35, 28, 0.95);
+  --text-strong-underline: rgba(40, 35, 28, 0.6);
+  --monogram: rgba(60, 55, 45, 0.7);
+  --glass-bg: rgba(255, 248, 230, 0.18);
+  --glass-border: rgba(212, 184, 106, 0.30);
+  --glass-border-hover: rgba(212, 184, 106, 0.55);
+  --glass-shadow: rgba(185, 170, 100, 0.18);
+  --glass-shine: rgba(255, 250, 230, 0.35);
+  --gold-accent: #5a3c1c;
+  /* Light: light warm scrim, dark warm text (matches the body text) */
+  --overlay-scrim: linear-gradient(
+    to top,
+    rgba(246, 242, 232, 0.95) 0%,
+    rgba(246, 242, 232, 0.55) 40%,
+    rgba(246, 242, 232, 0) 80%
+  );
+  /* Narrow cards: description wraps past the 80% stop, so carry the wash to
+     the top edge. Still graded, just never transparent. */
+  --overlay-scrim-full: linear-gradient(
+    to top,
+    rgba(246, 242, 232, 0.97) 0%,
+    rgba(246, 242, 232, 0.92) 55%,
+    rgba(246, 242, 232, 0.86) 100%
+  );
+  --overlay-text: rgba(42, 36, 27, 0.95);
+}
+
+[data-theme="dark"] {
+  --bg: #121210;
+  --nav-bg: rgba(18, 18, 16, 0.55);
+  --nav-border: rgba(100, 95, 80, 0.25);
+  --text-primary: rgba(200, 195, 185, 0.9);
+  --text-secondary: rgba(160, 155, 140, 0.65);
+  --text-strong: rgba(210, 205, 195, 0.95);
+  --text-strong-underline: rgba(210, 205, 195, 0.6);
+  --monogram: rgba(200, 195, 185, 0.7);
+  --glass-bg: rgba(30, 28, 22, 0.35);
+  --glass-border: rgba(212, 184, 106, 0.20);
+  --glass-border-hover: rgba(212, 184, 106, 0.45);
+  --glass-shadow: rgba(185, 170, 100, 0.12);
+  --glass-shine: rgba(212, 184, 106, 0.08);
+  --gold-accent: #d4b86a;
+  /* Dark: dark warm scrim, light warm text (matches the body text) */
+  --overlay-scrim: linear-gradient(
+    to top,
+    rgba(16, 14, 10, 0.95) 0%,
+    rgba(16, 14, 10, 0.55) 40%,
+    rgba(16, 14, 10, 0.0) 80%
+  );
+  --overlay-scrim-full: linear-gradient(
+    to top,
+    rgba(16, 14, 10, 0.96) 0%,
+    rgba(16, 14, 10, 0.90) 55%,
+    rgba(16, 14, 10, 0.84) 100%
+  );
+  --overlay-text: rgba(216, 210, 198, 0.96);
+}
+
+html {
+  height: 100%;
+  scrollbar-width: none;            /* Firefox */
+}
+html::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+body {
+  min-height: 100%;
+  width: 100%;
+  /* min-width: 10000px; */
+  overflow-x: hidden;
+  background: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background 0.8s ease;
+}
+
+/* Smooth CSS variable transitions during theme change */
+#nav-pill, .nav-link, .nav-monogram, #theme-toggle, .project-card {
+  transition: color 0.8s ease, background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+}
+
+canvas { display: block; }
+
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: var(--app-vh, 100dvh);
+  z-index: 1;
+}
+
+#app canvas { touch-action: none; }
+
+#scroll-spacer {
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
+}
+
+/* --- Nav pill bar --- */
+#nav-pill {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 6px 8px 6px 6px;
+  border-radius: 50px;
+  border: 1px solid var(--nav-border);
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 20;
+  user-select: none;
+}
+
+.nav-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background-color: var(--monogram);
+  -webkit-mask-image: url('/favicon-192.png');
+  mask-image: url('/favicon-192.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.nav-link {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: relative;
+  letter-spacing: -0.01em;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  color: var(--text-strong);
+  font-weight: 500;
+}
+
+/* Underline for nav links without segments */
+.nav-link.active:not(:has(.nav-segments))::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--text-strong-underline);
+}
+
+/* Segmented underline (for about sub-layers) */
+.nav-segments {
+  display: none;
+  position: absolute;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  gap: 6px;
+}
+
+.nav-link.active .nav-segments {
+  display: flex;
+}
+
+.nav-segment {
+  flex: 1;
+  height: 100%;
+  background: var(--text-strong-underline);
+  border-radius: 1px;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.nav-segment.active {
+  opacity: 1;
+}
+
+/* --- Theme toggle button --- */
+#theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+#theme-toggle:hover {
+  color: var(--text-primary);
+}
+
+#theme-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Show sun in dark mode, moon in light mode */
+#theme-toggle .icon-sun { display: none; }
+#theme-toggle .icon-moon { display: block; }
+
+[data-theme="dark"] #theme-toggle .icon-sun { display: block; }
+[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+
+/* --- About overlays (interests, thank you) --- */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;    /* fallback; see #app */
+  height: var(--app-vh, 100dvh);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.about-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 6rem 2rem 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#about-life-overlay .about-overlay-inner {
+  max-width: 1200px;
+}
+
+.about-overlay-title {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.about-overlay-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: -1.5rem;
+}
+
+.about-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.about-gallery-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-gallery-heading {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.about-gallery-grid {
+  position: relative;
+}
+
+/* Accordion sections */
+.about-accordion-section {
+  border-bottom: 1px solid var(--nav-border);
+}
+
+#about-life-overlay .about-accordion-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.about-accordion-header:hover .about-gallery-heading {
+  color: var(--text-strong-underline, var(--text-strong));
+}
+
+.about-accordion-header:hover .about-accordion-chevron {
+  color: var(--text-strong);
+}
+
+.about-accordion-chevron {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.about-accordion-content {
+  height: 0;
+  overflow: hidden;
+}
+
+.about-accordion-content .about-gallery-grid {
+  padding-bottom: 1.5rem;
+}
+
+.about-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* position, size set by masonry layout algorithm */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Thank You section — rotating names */
+.thankyou-line {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.03em;
+  text-align: left;
+  display: flex;
+  align-items: baseline;
+  gap: 2.0em;
+  flex-wrap: wrap;
+}
+
+.thankyou-name-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  padding-right: 0.15em;
+}
+
+.thankyou-name {
+  font-style: italic;
+  /* color: var(--gold-accent); */
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 0.1em;
+}
+
+/* Glass gratitude frame — matches project-card styling */
+.thankyou-frame {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 580px;
+  margin: 0 auto 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  backdrop-filter: url(#glass);
+  -webkit-backdrop-filter: url(#glass);
+  box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+  overflow: hidden;
+}
+
+:root .thankyou-frame {
+  border-color: rgba(139, 106, 60, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 106, 60, 0.1) 0%,
+    rgba(139, 106, 60, 0.05) 50%,
+    rgba(139, 106, 60, 0.02) 100%
+  );
+}
+
+[data-theme="dark"] .thankyou-frame {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+}
+
+.thankyou-frame-text {
+  flex: 0 0 40%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2.5rem 2.5rem;
+}
+
+.thankyou-frame-text .thankyou-line {
+  flex-direction: column;
+  gap: 0.15em;
+  text-align: left;
+}
+
+.thankyou-small {
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.thankyou-large {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--text-strong);
+}
+
+.thankyou-frame-photo {
+  flex: 1 1 60%;
+  position: relative;
+  overflow: hidden;
+}
+
+.thankyou-frame-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .thankyou-frame {
+    flex-direction: column;
+    min-height: 0;
+  }
+  .thankyou-frame-text {
+    flex: 0 0 auto;
+  }
+  .thankyou-frame-photo {
+    flex: 0 0 auto;
+    min-height: 280px;
+  }
+}
+
+/* --- Projects overlay --- */
+#projects-overlay,
+#projects-passion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;    /* fallback; see #app */
+  height: var(--app-vh, 100dvh);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.projects-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 6rem 2rem 4rem;
+  max-width: min(1280px, 94vw);
+  margin: 0 auto;
+}
+
+.projects-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-row-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.projects-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.4rem, 4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.04em;
+}
+
+.projects-asterisk {
+  position: relative;
+  cursor: default;
+  font-size: 0.6em;
+  vertical-align: super;
+  opacity: 0.6;
+  padding: 0.5em 0.8em;
+  margin: -0.5em -0.8em;
+}
+
+.projects-asterisk::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-strong);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.projects-asterisk:hover::after {
+  opacity: 1;
+}
+
+/* Simple two-column grid of uniform cards. */
+.projects-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.projects-row:empty {
+  display: none;
+}
+
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Scrim coverage depends on how narrow the card is, not on the viewport:
+     a 2-column card at ~900px is as tight as a 1-column card on a phone. */
+  container-type: inline-size;
+  container-name: projectcard;
+  padding: 0.75rem 0.75rem 1.5rem;   /* extra frame at the bottom for the title */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  backdrop-filter: url(#glass);
+  -webkit-backdrop-filter: url(#glass);
+  box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.4),
+              box-shadow 0.35s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+}
+
+:root .project-card {
+  border-color: rgba(139, 106, 60, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 106, 60, 0.1) 0%,
+    rgba(139, 106, 60, 0.05) 50%,
+    rgba(139, 106, 60, 0.02) 100%
+  );
+}
+
+[data-theme="dark"] .project-card {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+}
+
+[data-theme="dark"] .project-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--glass-shine);
+}
+
+.project-card-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.618;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--glass-border) 0%, transparent 60%);
+  background-size: cover;
+  background-position: center;
+  clip-path: inset(0 round 12px);
+}
+
+.project-card-overlay {
+  position: absolute;
+  /* Bleeds past .project-card-img's edges so backdrop-filter's own edge/corner
+     rendering always falls outside the parent's clip-path and never shows;
+     padding is bumped by the same amount so the text sits where it used to. */
+  inset: -4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;    /* bottom-left, like the reference */
+  justify-content: flex-end;
+  gap: 0.45rem;
+  padding: calc(1.2rem + 4px);
+  opacity: 0;
+  /* Brand-themed bottom-up scrim (per light/dark) on top of the backdrop blur */
+  background: var(--overlay-scrim);
+  backdrop-filter: url(#glass) blur(1px) brightness(1.0);
+  -webkit-backdrop-filter: url(#glass) blur(2px) brightness(1.0);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.project-card.has-description:hover .project-card-overlay,
+.project-card.no-image .project-card-overlay {
+  opacity: 1;
+}
+
+/* Below ~460px of card the longest description reaches past 80% of the image
+   box, where the default scrim has already faded out. Card widths are exact;
+   the text heights behind this threshold are estimated from DM Mono's 0.6em
+   advance, so treat 460px as approximate. */
+@container projectcard (max-width: 460px) {
+  .project-card-overlay {
+    background: var(--overlay-scrim-full);
+  }
+}
+
+.project-card-overlay-title {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.05rem, 1.5vw, 1.5rem);   /* ~text-2xl, from the reference */
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--overlay-text);
+}
+
+.project-card-overlay p {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(12px, 0.95vw, 14px);
+  line-height: 1.5;
+  color: var(--overlay-text);
+  text-align: left;
+  white-space: pre-line;
+}
+
+.project-card-overlay-affil {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(11px, 0.85vw, 12.5px);
+  letter-spacing: 0.03em;
+  color: var(--overlay-text);
+  opacity: 0.72;
+  margin-top: 0.2rem;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;   /* matches card padding-bottom so the caption sits centered in the bottom frame */
+  flex-shrink: 0;
+}
+
+.project-card-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+
+.project-card-link {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.project-card-link:hover {
+  color: var(--text-strong);
+  transform: scale(1.1);
+}
+
+.project-card-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.project-card h3 {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(14.5px, 1vw, 16.5px);   /* halfway between old 13px and the bumped size */
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-align: left;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+/* Touch devices: reveal the description when the tile is centered (no hover) */
+@media (hover: none) {
+  .project-card.has-description.in-view .project-card-overlay {
+    opacity: 1;
+  }
+}
+
+/* Narrow viewports: single column */
+@media (max-width: 768px) {
+  .projects-inner {
+    max-width: 100%;
+    padding: 4.5rem 0.9rem 3rem;   /* thinner side frame so cards fill more of the screen */
+  }
+  .projects-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Skills overlay --- */
+.skills-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;    /* fallback; see #app */
+  height: var(--app-vh, 100dvh);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.skills-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 6rem 2rem 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.skills-overlay-title {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* Accordion sections */
+.skills-accordion-section {
+  border-bottom: 1px solid var(--nav-border);
+}
+
+.skills-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.skills-accordion-header:hover .skills-accordion-heading {
+  color: var(--text-strong);
+}
+
+.skills-accordion-header:hover .skills-accordion-chevron {
+  color: var(--text-strong);
+}
+
+.skills-accordion-heading {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 300;
+  color: var(--text-strong);
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.skills-accordion-chevron {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.skills-accordion-content {
+  height: 0;
+  overflow: hidden;
+}
+
+/* Skill cards container */
+.skills-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem 0 1rem;
+}
+
+/* --- Shared skill card base --- */
+.skill-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  flex-wrap: wrap;
+}
+
+.skill-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: inherit;
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Shared expand area --- */
+.skill-expand {
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.skill-expand-line {
+  font: 11px/1.7 'JetBrains Mono', monospace;
+  white-space: pre;
+  opacity: 0;
+  padding-left: 1.2em;
+}
+
+/* ==========================================================================
+   TERMINAL THEME (Languages)
+   ========================================================================== */
+
+.skill-card--terminal {
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  color: #1f2328;
+}
+
+.skill-card--terminal:hover {
+  border-color: #8b949e;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.skill-card--terminal .skill-prompt {
+  color: inherit;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.skill-card--terminal .skill-typed-name {
+  flex: 1;
+  min-width: 0;
+  white-space: pre;
+  overflow: hidden;
+  tab-size: 10;
+}
+
+/* CUDA binary-tree reveal — per-character spans */
+.skill-card--terminal .skill-typed-name span {
+  display: inline;
+}
+
+.skill-card--terminal .skill-proficiency-label {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 9px;
+  opacity: 0.35;
+  margin-right: 0.4em;
+  letter-spacing: 0.02em;
+}
+
+.skill-card--terminal .skill-meter--terminal {
+  flex-shrink: 0;
+  color: inherit;
+  opacity: 0.5;
+  font-size: 11px;
+  white-space: pre;
+  letter-spacing: -0.05em;
+}
+
+.skill-card--terminal .skill-expand-line {
+  color: #57606a;
+}
+
+/* Dark mode terminal */
+[data-theme="dark"] .skill-card--terminal {
+  background: #0d1117;
+  border-color: #30363d;
+  color: #c9d1d9;
+}
+
+[data-theme="dark"] .skill-card--terminal:hover {
+  border-color: #484f58;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .skill-card--terminal .skill-expand-line {
+  color: #8b949e;
+}
+
+/* ==========================================================================
+   REGISTER THEME (Embedded & Robotics)
+   ========================================================================== */
+
+/* Table header row */
+.skill-register-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6e7681;
+  border-bottom: 1px solid #d0d7de;
+  margin-bottom: 0.25rem;
+  opacity: 0;
+}
+
+[data-theme="dark"] .skill-register-header-row {
+  color: #484f58;
+  border-bottom-color: #30363d;
+}
+
+.skill-register-header-col {
+  white-space: nowrap;
+}
+
+.skill-register-header-col:nth-child(1) { width: 110px; }
+.skill-register-header-col:nth-child(2) { width: 90px; }
+.skill-register-header-col:nth-child(3) { flex: 1; }
+
+/* Register card */
+.skill-card--register {
+  background: #faf8f0;
+  border: 1px solid #c8c4b8;
+  color: #1a1a1a;
+}
+
+.skill-card--register:hover {
+  border-color: #8b8578;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.skill-card--register .skill-register-name {
+  width: 110px;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.skill-card--register .skill-register-addr {
+  width: 90px;
+  flex-shrink: 0;
+  color: #0550ae;
+  font-weight: 400;
+  font-size: 11px;
+}
+
+.skill-card--register .skill-register-prof {
+  flex: 1;
+  font-size: 11px;
+  color: #57606a;
+}
+
+[data-theme="dark"] .skill-card--register .skill-register-prof {
+  color: #808080;
+}
+
+.skill-card--register .skill-expand-line {
+  color: #57606a;
+  font-size: 10px;
+}
+
+/* Dark mode register */
+[data-theme="dark"] .skill-card--register {
+  background: #1c1c1c;
+  border-color: #333;
+  color: #d4d4d4;
+}
+
+[data-theme="dark"] .skill-card--register:hover {
+  border-color: #555;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .skill-card--register .skill-register-addr {
+  color: #569cd6;
+}
+
+[data-theme="dark"] .skill-card--register .skill-register-section {
+  color: #808080;
+}
+
+[data-theme="dark"] .skill-card--register .skill-expand-line {
+  color: #808080;
+}
+
+/* Bit register proficiency meter — continuous bar */
+.skill-meter--register {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-meter--register .skill-meter-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: difference;
+}
+
+.skill-bit {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.skill-bit.filled {
+  background: #1a1a1a;
+}
+
+/* Bit scan animation on hover */
+.skill-bit.filled.scanning {
+  background: #0550ae;
+}
+
+[data-theme="dark"] .skill-meter--register {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .skill-bit.filled {
+  background: #d4d4d4;
+}
+
+[data-theme="dark"] .skill-bit.filled.scanning {
+  background: #569cd6;
+}
+
+/* ==========================================================================
+   TRAINING THEME (AI)
+   ========================================================================== */
+
+.skill-card--training {
+  background: #f5f5f0;
+  border: 1px solid #d0cec5;
+  color: #2d2d2d;
+}
+
+.skill-card--training:hover {
+  border-color: #8b8578;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.skill-card--training .skill-name {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.skill-card--training .skill-training-metric {
+  flex: 1;
+  margin-left: auto;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 400;
+  color: #6b5c1e;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+.skill-card--training .skill-expand-line {
+  color: #57606a;
+  font-size: 10px;
+}
+
+/* Dark mode training */
+[data-theme="dark"] .skill-card--training {
+  background: #1e1e2e;
+  border-color: #313244;
+  color: #cdd6f4;
+}
+
+[data-theme="dark"] .skill-card--training:hover {
+  border-color: #45475a;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .skill-card--training .skill-training-metric {
+  color: #f9e2af;
+}
+
+[data-theme="dark"] .skill-card--training .skill-name {
+  color: #cdd6f4;
+}
+
+[data-theme="dark"] .skill-card--training .skill-expand-line {
+  color: #585b70;
+}
+
+/* ==========================================================================
+   PLAIN THEME (Robotics & Sim) — static, no animation
+   ========================================================================== */
+
+.skill-card--plain {
+  background: #f5f5f0;
+  border: 1px solid #d0cec5;
+  color: #2d2d2d;
+}
+
+.skill-card--plain:hover {
+  border-color: #8b8578;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.skill-card--plain .skill-name {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.skill-card--plain .skill-plain-metric {
+  flex: 1;
+  margin-left: auto;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 400;
+  color: #57606a;
+  white-space: nowrap;
+}
+
+.skill-card--plain .skill-expand-line {
+  color: #57606a;
+  font-size: 10px;
+}
+
+/* Dark mode plain */
+[data-theme="dark"] .skill-card--plain {
+  background: #1e1e2e;
+  border-color: #313244;
+  color: #cdd6f4;
+}
+
+[data-theme="dark"] .skill-card--plain:hover {
+  border-color: #45475a;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .skill-card--plain .skill-plain-metric {
+  color: #808080;
+}
+
+[data-theme="dark"] .skill-card--plain .skill-expand-line {
+  color: #585b70;
+}
+

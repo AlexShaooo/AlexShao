@@ -1,0 +1,15 @@
+node_modules/
+site/
+dist/
+*.wasm
+public/resume.aux
+public/resume.fdb_latexmk
+public/resume.fls
+public/resume.log
+public/resume.out
+public/resume.synctex.gz
+.claude/
+CLAUDE.md
+preview.sh
+build.sh
+latex-out

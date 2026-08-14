@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-STV9SKXLHK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-STV9SKXLHK');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Shao</title>
+  <meta name="description" content="Alex Shao — Pure Mathematics at UC Berkeley. Research and embedded software engineer at Symbiokinetics. Portfolio of projects in embedded systems, GPU computing, and robotics RL.">
+  <meta property="og:title" content="Alex Shao">
+  <meta property="og:description" content="Alex Shao — Pure Mathematics at UC Berkeley. Research and embedded software engineer at Symbiokinetics. Portfolio of projects in embedded systems, GPU computing, and robotics RL.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alexshao.net/">
+  <meta property="og:image" content="https://alexshao.net/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Alex Shao">
+  <meta name="twitter:description" content="Alex Shao — Pure Mathematics at UC Berkeley. Research and embedded software engineer at Symbiokinetics.">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" id="favicon-lg">
+  <link rel="apple-touch-icon" href="/favicon-192.png">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <script>
+    (function() {
+      var img = new Image();
+      img.src = '/favicon-192.png';
+      img.onload = function() {
+        setFavicon();
+        var now = new Date();
+        var ms = (60 - now.getMinutes()) * 60000 - now.getSeconds() * 1000;
+        setTimeout(function tick() { setFavicon(); setTimeout(tick, 3600000); }, ms);
+      };
+      function setFavicon() {
+        var hour = new Date().getHours();
+        var isDay = hour >= 6 && hour < 20;
+        var color = isDay ? '#111' : '#fff';
+        var c = document.createElement('canvas');
+        c.width = 192; c.height = 192;
+        var ctx = c.getContext('2d');
+        var s = 1.2, off = 192 * (1 - s) / 2;
+        ctx.drawImage(img, off, off, 192 * s, 192 * s);
+        ctx.globalCompositeOperation = 'source-in';
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 192, 192);
+        document.getElementById('favicon-lg').href = c.toDataURL('image/png');
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles.css">
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</head>
+<body>
+  <div id="app"></div>
+  <div class="sr-only">
+    <h1>Alex Shao</h1>
+    <p>Researcher at Symbiokinetics</p>
+    <p>Building collaborative robotic platforms in healthcare at Symbiokinetics. Interested in Real-Time Control, Contact-Rich Manipulation, and Robot Learning. Pure Mathematics from Berkeley.</p>
+    <p>Portfolio of projects in embedded systems, GPU computing, and robotics RL.</p>
+
+    <h2>Projects</h2>
+    <ul>
+      <li>Safe Physical Human-Robot Interaction: Real-time control for safe physical human-robot interaction. At Symbiokinetics.</li>
+      <li>Contact-Rich Manipulation and Skill Transfer: Robot learning for contact-rich manipulation and skill transfer. At Symbiokinetics.</li>
+      <li>High-Rate Custom Baremetal Firmware: Baremetal STM32 firmware for realtime data acquisition and streaming at high sample rates. At Symbiokinetics.</li>
+      <li>Batched K-Means on GPU: GPU-accelerated batched K-Means clustering using CUDA C and Python for massively parallel computation. At Bongard AI.</li>
+      <li>Simulating Backdrivability: Real-time rigid-body simulation for prototyping compliant control strategies. At Symbiokinetics.</li>
+      <li>Pneumatic Soft Robot Manufacturing: Developed a repeatable heat-seal process for bonding LDPE pneumatic pouches to pressure valves. At Berkeley BMLab.</li>
+      <li>Autonomous Sailboat Electronics: Designed and assembled electronics for a fleet of autonomous sailboats: IMU, magnetic encoders, wind vane, radio telemetry, and motor drivers. At Berkeley TAFLab.</li>
+      <li>Handsi: Customizable desktop app mapping hand gestures to full OS actions: cursor, clicks, scrolling, volume, zoom, copy/paste, tab switching.</li>
+      <li>TDS Publication: Batched K-Means. Towards Data Science publication with 10k+ reads.</li>
+    </ul>
+
+    <h2>Skills</h2>
+    <h3>Languages</h3>
+    <ul>
+      <li>Python: Web dev, ML, and data since 2021. NumPy, PyTorch, MuJoCo, ROS2 bindings.</li>
+      <li>C: Systems and embedded programming since 2023. ROS2, MuJoCo, Isaac Sim, POSIX, bare-metal.</li>
+      <li>C++: Control systems and embedded since 2023. ROS2, MuJoCo, Isaac Sim, optimization.</li>
+      <li>CUDA: GPU compute since 2023. Kernels, K-Means project, 1600x+ speedup.</li>
+      <li>Rust: Systems programming since 2025. Handsi passion project.</li>
+    </ul>
+    <h3>Embedded and Systems</h3>
+    <ul>
+      <li>STM32: Baremetal firmware. SPI, UART, I2C, SAI, DMA. LwIP, TCP/IP, mDNS. FreeRTOS.</li>
+      <li>ROS2: Trajectory planning, joint control, sensor integration.</li>
+      <li>EtherCAT: Real-time motor-drive control, deterministic fieldbus, and device state machines.</li>
+      <li>Real-time Linux: PREEMPT_RT patched kernel, deterministic scheduling, sub-millisecond latency.</li>
+      <li>Arduino: Autonomous sailboat electronics — IMU, encoders, telemetry, and propulsion/rudder/sail actuation.</li>
+    </ul>
+    <h3>Robotics and Simulation</h3>
+    <ul>
+      <li>Isaac Sim and Isaac Lab: Robot modeling, domain randomization, sim-to-real transfer pipelines.</li>
+      <li>MuJoCo: Physics simulation, contact-rich manipulation modeling, policy training and evaluation.</li>
+      <li>Real-Time Robot Control: Torque and joint control of robot manipulators.</li>
+      <li>MATLAB: Backdrivability and haptic interaction simulation, control prototyping and analysis.</li>
+      <li>SolidWorks: Carbon-fiber end effectors, sensor mounts, and fixtures for Dexter HDI and Amber B1.</li>
+    </ul>
+    <h3>Machine Learning</h3>
+    <ul>
+      <li>PyTorch: Tensors, autograd, custom modules, training loops, model deployment and inference.</li>
+      <li>Reinforcement Learning: Policy gradient, off-policy, entropy-regularized methods.</li>
+      <li>Imitation Learning: Behavioral cloning, residual policies, learning from demonstration.</li>
+      <li>Skill Discovery: Unsupervised skill learning, density-based rewards, SAC (soft actor-critic).</li>
+      <li>HPC: Batched K-Means on GPU, CUDA C and Python, 1600x+ speedup.</li>
+    </ul>
+  </div>
+
+  <!-- Projects Layer 1: Professional Work -->
+  <div id="projects-overlay">
+    <div class="projects-inner">
+      <div class="projects-section">
+        <div class="projects-row-wrapper">
+          <h2 class="projects-section-title">Professional Work:<span class="projects-asterisk" data-tip="Select projects. Additional work under NDA.">*</span></h2>
+          <div class="projects-row projects-row-top"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Layer 2: Passion Projects -->
+  <div id="projects-passion-overlay">
+    <div class="projects-inner">
+      <div class="projects-section">
+        <div class="projects-row-wrapper">
+          <h2 class="projects-section-title">Passion Projects:</h2>
+          <div class="projects-row projects-row-bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills overlay -->
+  <div id="skills-overlay" class="skills-overlay">
+    <div class="skills-overlay-inner">
+      <h2 class="skills-overlay-title">Skills</h2>
+      <div class="skills-accordion"></div>
+    </div>
+  </div>
+
+  <!-- About Layer 2: Interests -->
+  <div id="about-interests-overlay" class="about-overlay">
+    <div class="about-overlay-inner">
+      <h2 class="about-overlay-title">Interests</h2>
+      <div class="about-gallery">
+        <div class="about-accordion-section" data-folder="photography">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">Photography</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="photography"></div>
+          </div>
+        </div>
+        <div class="about-accordion-section" data-folder="traveling">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">Traveling</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="traveling"></div>
+          </div>
+        </div>
+        <div class="about-accordion-section" data-folder="skiing">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">Skiing</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="skiing"></div>
+          </div>
+        </div>
+        <div class="about-accordion-section" data-folder="climbing">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">Climbing</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="climbing"></div>
+          </div>
+        </div>
+        <div class="about-accordion-section" data-folder="art">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">Art</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="art"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Layer 3: Thank You -->
+  <div id="about-life-overlay" class="about-overlay">
+    <div class="about-overlay-inner">
+      <div class="about-gallery">
+        <!-- Family: Glass frame with synced text + photo cycling -->
+        <div class="thankyou-frame">
+          <div class="thankyou-frame-text">
+            <h2 class="thankyou-line about-overlay-title">
+              <span class="thankyou-small">With</span>
+              <span class="thankyou-large">Gratitude</span>
+              <span class="thankyou-small">to my</span>
+              <span class="thankyou-name-wrapper"><span class="thankyou-name"></span></span>
+            </h2>
+          </div>
+          <div class="thankyou-frame-photo">
+            <img class="thankyou-photo" src="" alt="" />
+          </div>
+        </div>
+
+        <!-- Everyone Else: Accordion -->
+        <div class="about-accordion-section" data-folder="everyone_else">
+          <button class="about-accordion-header">
+            <h3 class="about-gallery-heading">and to everyone else</h3>
+            <span class="about-accordion-chevron">&#x276F;</span>
+          </button>
+          <div class="about-accordion-content">
+            <div class="about-gallery-grid" data-folder="everyone_else"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="nav-pill">
+    <div class="nav-monogram"></div>
+    <a class="nav-link active" data-section="home">home</a>
+    <a class="nav-link" data-section="projects">projects<span class="nav-segments"><span class="nav-segment" data-segment="0"></span><span class="nav-segment" data-segment="1"></span></span></a>
+    <a class="nav-link" data-section="skills">skills</a>
+    <a class="nav-link" data-section="about">about<span class="nav-segments"><span class="nav-segment" data-segment="0"></span><span class="nav-segment" data-segment="1"></span><span class="nav-segment" data-segment="2"></span></span></a>
+    <a class="nav-link" data-section="resume">resume</a>
+    <button id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </nav>
+  <svg style="position:absolute;width:0;height:0">
+    <filter id="glass" x="-50%" y="-50%" width="200%" height="200%" primitiveUnits="objectBoundingBox">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="2" result="map"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.02" result="blur"/>
+      <feDisplacementMap in="blur" in2="map" scale="0.8" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
